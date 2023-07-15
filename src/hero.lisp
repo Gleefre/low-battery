@@ -108,6 +108,8 @@
                                                    (/ (height *camera*) 2)))))
                 (update-hero)
                 (setf (last-portal *hero*) ref)
+                (unless (member *room* '(:main :home))
+                  (load-room (room-filename *room*)))
                 (animating (v :time-source (game-clock *game*) :speed 4)
                   (s+:enable-scissor (alexandria:lerp v x (- x (/ *unit* 2)))
                                      (alexandria:lerp v y (- y (/ *unit* 2)))

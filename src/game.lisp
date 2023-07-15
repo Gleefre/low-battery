@@ -21,7 +21,8 @@
 
 (defun go-to-room (room)
   (setf (game-room *game*) room
-        (hero-room *hero*) room))
+        (hero-room *hero*) room
+        *room* room))
 
 (defmethod kit.sdl2:keyboard-event ((game game) state ts rep? keysym)
   (when (eq state :keydown)
