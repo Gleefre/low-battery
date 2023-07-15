@@ -2,7 +2,7 @@
 
 (defparameter *unit* 100)
 
-(defparameter *order* (list :platform :ice :battery :portal :update :home))
+(defparameter *order* (list :platform :ice :battery :portal :update :home :text))
 
 (defun draw-hero ()
   (when (animate *hero*)
