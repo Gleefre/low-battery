@@ -1,4 +1,4 @@
-(asdf:defsystem "low-batter"
+(asdf:defsystem "low-battery"
   :description "Low Batter - Game for Trijam #228"
   :version "0.0.0"
   :author "Gleefre <varedif.a.s@gmail.com>"
