@@ -7,7 +7,7 @@
 (defun draw-hero ()
   (when (animate *hero*)
     (case (car (animate *hero*))
-      (:skiss (s+:enable-scissor 0 0 (* *unit* (- 1 (cdr (animate *hero*)))) *unit*))
+      (:skiss (s+:enable-scissor 0 0 (* *unit* (- 1 (cadr (animate *hero*)))) *unit*))
       (:move)))
   (s+:with-color (s:+magenta+)
     (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3)))
