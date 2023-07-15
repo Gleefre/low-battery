@@ -130,13 +130,13 @@
       (s:text (format nil "#<CAMERA: ~S ~S>" (x *camera*) (y *camera*))
               (/ width 4) 40)
       (when (editing-cell *editing*)
-        (let ((*print-length* 10))
-          (s:text (format nil "#<CELL ~a: ~S>"
+        (let ((*print-right-margin* 25))
+          (s:text (format nil "#<CELL ~a:~%  ~S>"
                           (editing-cell *editing*)
                           (apply #'cell (editing-cell *editing*)))
-                  (/ width 4) 80)))
+                  (/ width 4) 160)))
       (when (ref *editing*)
         (s:text (format nil "#<REF: ~S>" (ref *editing*))
-                (/ width 4) 120))
+                (/ width 4) 80))
       (s:text (format nil "#<ROOM: ~S>" *room*)
-              (/ width 4) 160))))
+              (/ width 4) 120))))
