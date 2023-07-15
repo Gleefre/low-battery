@@ -1,0 +1,1 @@
+(:ROOM (:CELLS (((3 . 1) (:PLATFORM)) ((2 . 1) (:PLATFORM)) ((2 . -1) (:PLATFORM)) ((3 . -1) (:PLATFORM)) ((3 . 0) (:PLATFORM)) ((2 . 0) (:BATTERY . 1) (:PLATFORM)) ((0 . 0) (:TEXT . "Keep your battery charge positive!") (:PLATFORM)) ((1 . 0) (:PLATFORM))) :NAME :LEVELS))
