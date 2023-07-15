@@ -19,9 +19,9 @@
   (alexandria:with-gensyms ($min-x $max-x $min-y $max-y $x $y $camera)
     `(let ((,$camera ,camera))
        (let ((,$min-x (floor (- (x ,$camera) (/ (width ,$camera) 2))))
-             (,$max-x (ceiling (+ 2 (x ,$camera) (/ (width ,$camera) 2))))
+             (,$max-x (ceiling (+ (x ,$camera) (/ (width ,$camera) 2))))
              (,$min-y (floor (- (y ,$camera) (/ (height ,$camera) 2))))
-             (,$max-y (ceiling (+ 2 (y ,$camera) (/ (height ,$camera) 2)))))
+             (,$max-y (ceiling (+ (y ,$camera) (/ (height ,$camera) 2)))))
          (loop for ,$x from ,$min-x to ,$max-x
                do (loop for ,$y from ,$min-y to ,$max-y
                         do (let ((,var-x ,$x)
