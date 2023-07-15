@@ -97,3 +97,15 @@
       (:scancode-kp-6
        (when (game-editing game)
          (decf (x (game-camera game)) 1/2))))))
+
+(defmethod kit.sdl2:mousebutton-event :around ((game game) state ts button x y)
+  (let ((*editing* (game-editing game))
+        (*room* (game-room game))
+        (*camera* (game-camera game)))
+    (call-next-method)))
+
+(defmethod kit.sdl2:keyboard-event :around ((game game) state ts rep? keysym)
+  (let ((*editing* (game-editing game))
+        (*room* (game-room game))
+        (*camera* (game-camera game)))
+    (call-next-method)))
