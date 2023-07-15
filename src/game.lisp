@@ -8,12 +8,13 @@
                    (hero (make-hero))
                    (animating nil)
                    (clock (sc:make-clock)))
-  (s:background s:+black+)
   (let ((*editing* editing)
         (*room* room)
         (*camera* camera)
         (*hero* hero)
         (*game* s::*sketch*))
+    (unless *editing*
+      (s:background s:+black+))
     (if *editing*
         (draw-editing s::*sketch* s:width s:height)
         (draw-room s:width s:height))))
