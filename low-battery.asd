@@ -19,6 +19,7 @@
   :components ((:file "packages")
                (:file "utils")
                (:file "rooms")
+               (:file "music")
                (:file "game"))
 
   :defsystem-depends-on (:deploy)
