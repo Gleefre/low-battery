@@ -174,7 +174,11 @@
          (incf (x (game-camera game)) 1/2)))
       (:scancode-kp-6
        (when (game-editing game)
-         (decf (x (game-camera game)) 1/2))))))
+         (decf (x (game-camera game)) 1/2)))
+      (:scancode-kp-divide
+       (save-room (room-filename *room*)))
+      (:scancode-kp-multiply
+       (load-room (room-filename *room*))))))
 
 (defmethod kit.sdl2:mousebutton-event :around ((game game) state ts button x y)
   (let ((*editing* (game-editing game))
