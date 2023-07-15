@@ -75,10 +75,26 @@
                 (animate *hero*) (list :move v)))
       (fit-camera-to-hero))))
 
-(defvar *portals-on* nil)
+(defparameter *portals-on* nil)
+
+(defparameter *last-views* (make-hash-table :test #'equal))
+
+(defun ref-view (ref)
+  (gethash ref *last-views*))
+
+(defun (setf ref-view) (new-view ref)
+  (setf (gethash ref *last-views*) new-view))
+
+(defun view (room x y)
+  (ref-view (list room x y)))
+
+(defun (setf view) (new-view room x y)
+  (setf (ref-view (list room x y)) new-view))
 
 (defun portal-to (ref)
   (setf *portals-on* t)
+  (setf (view *room* (x *hero*) (y *hero*))
+        (list (x *camera*) (y *camera*)))
   (let ((x (* *unit* (- (x *hero*) (- (x *camera*)
                                       (/ (width *camera*) 2)))))
         (y (* *unit* (- (y *hero*) (- (y *camera*)
@@ -104,8 +120,8 @@
                                  (alexandria:lerp v *unit* 0))
               (when (>= v 1)
                 (go-to-room (car ref))
-                (setf (x *camera*) (cadr ref)
-                      (y *camera*) (caddr ref)
+                (setf (x *camera*) (or (car (ref-view ref)) (cadr ref))
+                      (y *camera*) (or (cadr (ref-view ref)) (caddr ref))
                       (x *hero*) (cadr ref)
                       (y *hero*) (caddr ref)
                       x (* *unit* (- (x *hero*) (- (x *camera*)
