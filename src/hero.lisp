@@ -2,10 +2,15 @@
 
 (defvar *hero*)
 
+(defparameter *hero-width* 2)
+(defparameter *hero-height* 2)
+
 (defclass hero ()
   ((room :initform :main :initarg :room :accessor hero-room)
    (x :initform 0 :initarg :x :accessor x)
    (y :initform 0 :initarg :y :accessor y)
+   (width :initform *hero-width* :initarg :width :accessor width)
+   (height :initform *hero-height* :initarg :height :accessor height)
    (charge :initform 9 :initarg :charge :accessor charge)
    (max-charge :initform 9 :initarg :max-charge :accessor max-charge)
    (updates :initform () :accessor updates)
@@ -16,10 +21,10 @@
   (make-instance 'hero))
 
 (defun fit-camera-to-hero ()
-  (alexandria:maxf (x *camera*) (- (x *hero*) (1- (/ (width *camera*) 2))))
-  (alexandria:minf (x *camera*) (+ (x *hero*) (1- (/ (width *camera*) 2))))
-  (alexandria:maxf (y *camera*) (- (y *hero*) (1- (/ (height *camera*) 2))))
-  (alexandria:minf (y *camera*) (+ (y *hero*) (1- (/ (height *camera*) 2)))))
+  (alexandria:maxf (x *camera*) (- (x *hero*) (/ (width *hero*) 2)))
+  (alexandria:minf (x *camera*) (+ (x *hero*) (/ (width *hero*) 2)))
+  (alexandria:maxf (y *camera*) (- (y *hero*) (/ (height *hero*) 2)))
+  (alexandria:minf (y *camera*) (+ (y *hero*) (/ (height *hero*) 2))))
 
 (defun update-hero (&aux (x (x *hero*)) (y (y *hero*)) (cell (cell x y)))
   (serapeum:bcond
@@ -42,6 +47,7 @@
     (unless (cdr update)
       (push (list *room* x y) (updates *hero*))
       (incf (max-charge *hero*))
+      (incf (charge *hero*))
       (setf (cdr update) t)))
   (when (minusp (charge *hero*))
     (when (last-portal *hero*)
