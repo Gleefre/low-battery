@@ -81,7 +81,9 @@
              (:update
               (s:text "%" (/ *unit* 2) (/ *unit* 2)))
              (:home
-              (s:text "HOME" (/ *unit* 2) (/ *unit* 2))))))
+              (s:text "HOME" (/ *unit* 2) (/ *unit* 2)))
+             (:function
+              (funcall arg)))))
 
 (defun draw-room (width height)
   (let ((w (* *unit* (width *camera*)))
