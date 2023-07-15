@@ -57,7 +57,7 @@
   (let ((x (x *hero*))
         (y (y *hero*)))
     (animating (v :time-source (game-clock *game*) :speed 2)
-      (if (>= v 1)
+      (if (>= v 0.99)
           (progn
             (setf (game-animating *game*) nil
                   (animate *hero*) nil
