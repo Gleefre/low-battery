@@ -91,7 +91,12 @@
     (s+:with-fit (w h width height)
       (s+:with-scissor (0 0 w h)
         (do-accessible-cells (x y)
-          (s+:with-translate ((* *unit* (- x (x *camera*))) (* *unit* (- y (y *camera*))))
+          (s+:with-translate ((* *unit* (- x (- (x *camera*)
+                                                (/ (width *camera*) 2))
+                                           1/2))
+                              (* *unit* (- y (- (y *camera*)
+                                                (/ (height *camera*) 2))
+                                           1/2)))
             (draw-cell (cell x y) x y)))))))
 
 (defun update-editing-mode (n button)
