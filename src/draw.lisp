@@ -130,7 +130,7 @@
       (s:text (format nil "#<CAMERA: ~S ~S>" (x *camera*) (y *camera*))
               (/ width 4) 40)
       (when (editing-cell *editing*)
-        (let ((*print-right-margin* 25))
+        (let ((*print-right-margin* 20))
           (s:text (format nil "#<CELL ~a:~%  ~S>"
                           (editing-cell *editing*)
                           (apply #'cell (editing-cell *editing*)))
