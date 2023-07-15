@@ -175,5 +175,6 @@
   (move 1 0))
 
 (defun interact (&aux (x (x *hero*)) (y (y *hero*)))
-  (alexandria:when-let ((portal (find :portal (cell x y) :key #'car)))
-    (portal-to (cdr portal))))
+  (alexandria:when-let* ((portal (find :portal (cell x y) :key #'car))
+                         (ref (cdr portal)))
+    (portal-to ref)))
