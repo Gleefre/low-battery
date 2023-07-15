@@ -1,10 +1,13 @@
 (in-package #:low-battery)
 
+(defparameter *camera-width* 7)
+(defparameter *camera-height* 7)
+
 (defclass camera ()
   ((x :initform 0d0 :initarg :x :accessor x)
    (y :initform 0d0 :initarg :y :accessor y)
-   (width :initform 5 :initarg :width :accessor width)
-   (height :initform 5 :initarg :height :accessor height)
+   (width :initform *camera-width* :initarg :width :accessor width)
+   (height :initform *camera-height* :initarg :height :accessor height)
    ;;(angle :initform 0 :initarg :angle :accessor angle)
    ))
 
