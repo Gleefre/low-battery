@@ -1,7 +1,7 @@
 (in-package #:low-battery)
 
 (defclass room ()
-  ((cells :initform (make-hash-table :test #'equal) :accessor cells)
+  ((cells :initform (make-hash-table :test #'equal) :initarg :cells :accessor cells)
    (name  :initform (gensym "UNNAMED-ROOM") :initarg :name :reader name)))
 
 (defparameter *rooms-table* (make-hash-table))
@@ -45,7 +45,7 @@
         (destructuring-bind (&key room) (read in)
           (when room
             (destructuring-bind (&key cells name) room
-              (make-instance 'room :cells (alexandria:alist-hash-table cells)
+              (make-instance 'room :cells (alexandria:alist-hash-table cells :test #'equal)
                                    :name name))))))))
 
 (defun room-filename (name)
