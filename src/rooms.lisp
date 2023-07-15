@@ -39,6 +39,8 @@
   (setf (gethash (cons x y) (cells (current-room))) new-cell))
 
 (defun save-room (file &optional (*room* *room*))
+  ;; FIXME: This is an ugly workaround
+  (shift-room (current-room) 0 0)
   (alexandria:with-output-to-file (out file :if-exists :supersede)
     (with-standard-io-syntax
       (let ((*print-readably* T))
