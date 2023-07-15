@@ -124,12 +124,14 @@
     (s:with-font (s:make-font :size (floor (min height width) 30) :align :center)
       (s:text (format nil "#<MODE: ~S>" (mode *editing*))
               (/ width 4) (/ height 3))
+      (s:text (format nil "#<CAMERA: ~S ~S>" (x *camera*) (y *camera*))
+              (/ width 4) (+ 40 (/ height 3)))
       (when (editing-cell *editing*)
         (let ((*print-length* 10))
           (s:text (format nil "#<CELL ~a: ~S>"
                           (editing-cell *editing*)
                           (apply #'cell (editing-cell *editing*)))
-                  (/ width 4) (+ 40 (/ height 3)))))))
+                  (/ width 4) (+ 80 (/ height 3)))))))
   (s+:with-fit ((* *unit* 2) (* *unit* (ceiling (length (modeline *editing*)) 2)) (/ width 2) height)
     (loop for thing in (modeline *editing*)
           for n from 0
