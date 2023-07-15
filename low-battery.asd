@@ -7,6 +7,7 @@
   :depends-on ("sketch" "sketch-utils" "sketch-buttons"
                "stopclock"
                "alexandria" "serapeum"
+               "deploy"
                "harmony" "cl-mixed-vorbis" "cl-mixed-wav"
                #+(and linux (not android)) "cl-mixed-pulse"
                #+android "cl-mixed-aaudio"
