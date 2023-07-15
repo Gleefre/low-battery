@@ -49,7 +49,12 @@
   (when *editing*
     (if (eq (mode *editing*) :select)
         (setf (editing-cell *editing*) (list x y))
-        ())))
+        (let ((mode (nth (mode *editing*) (modeline *editing*))))
+          (case (car mode)
+            ((:platform :ice :portal :update :home)
+             (if (member (car mode) (cell x y) :key #'car)
+                 (alexandria:deletef (cell x y) (car mode) :key #'car)
+                 (push (cons (car mode) nil) (cell x y)))))))))
 
 (defun draw-cell (items x y)
   (when *editing*
