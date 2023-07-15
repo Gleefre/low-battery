@@ -4,10 +4,14 @@
   ((cells :initform (make-hash-table :test #'equal) :initarg :cells :accessor cells)
    (name  :initform (gensym "UNNAMED-ROOM") :initarg :name :reader name)))
 
-(defparameter *rooms-table* (make-hash-table))
+(defvar *rooms-table* (make-hash-table))
+
+(defvar *known-rooms* ())
 
 (defmethod initialize-instance :after ((room room) &key &allow-other-keys)
-  (setf (gethash (name room) *rooms-table*) room))
+  (setf (gethash (name room) *rooms-table*) room)
+  (when (keywordp (name room))
+    (pushnew (name room) *known-rooms*)))
 
 (defvar *room*)
 
@@ -17,8 +21,12 @@
     (room *room*)))
 
 (defun list-all-rooms ()
-  (loop for (key . value) in (alexandria:hash-table-alist *rooms-table*)
-        when (keywordp key) collect value))
+  (mapcar (lambda (key) (gethash key *rooms-table*))
+          *known-rooms*))
+
+(defun next-room ()
+  (or (cadr (member *room* *known-rooms*))
+      (car *known-rooms*)))
 
 (defmacro with-room ((&optional (room '*room*)) &body body)
   `(let ((*room* ,room))
