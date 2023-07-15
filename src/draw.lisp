@@ -57,7 +57,7 @@
         (s:background (s:gray 0.5))
         (s+:with-translate (0 *unit*)
           (s+:with-scissor (0 0 w (- h (* 2 *unit*)))
-            (s:background (s:gray 0.1))
+            (s:background (s:gray 0.2))
             (do-accessible-cells (x y)
               (s+:with-translate ((* *unit* (- x (- (x *camera*)
                                                     (/ (width *camera*) 2))
