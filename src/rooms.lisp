@@ -47,3 +47,6 @@
             (destructuring-bind (&key cells name) room
               (make-instance 'room :cells (alexandria:alist-hash-table cells)
                                    :name name))))))))
+
+(defun room-filename (name)
+  (data-path (format nil "rooms/~a.room" (string name))))
