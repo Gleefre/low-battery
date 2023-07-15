@@ -49,3 +49,18 @@
 
 (defun room-filename (name)
   (data-path (format nil "rooms/~a.room" (string name))))
+
+(defun load-rooms ()
+  (loop for file in (uiop:directory-files (data-path "rooms/"))
+        do (load-room file)))
+
+(defun shift-room (room x->0 y->0)
+  (let ((new-cells (make-hash-table :test #'equal)))
+    (loop for (key . cell) in (alexandria:hash-table-alist (cells room))
+          when cell
+          do (destructuring-bind (x . y) key
+               (setf (gethash (cons (- x x->0) (- y y->0)) new-cells) cell)))
+    (setf (cells room) new-cells)))
+
+(defun touch-room (name)
+  (save-room (room-filename name) (make-instance 'room :name name)))
