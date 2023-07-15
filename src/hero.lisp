@@ -49,7 +49,7 @@
     ((not rec)
      (decf (charge *hero*))))
   (alexandria:when-let ((update (find :update cell :key #'car)))
-    (unless (member (list *room* x y) (updates *hero*))
+    (unless (member (list *room* x y) (updates *hero*) :test #'equal)
       (push (list *room* x y) (updates *hero*))
       (incf (max-charge *hero*) (cdr update))
       (incf (charge *hero*) (cdr update))))
