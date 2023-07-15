@@ -16,7 +16,10 @@
 
   :pathname "src"
   :serial T
-  :components ((:file "packages"))
+  :components ((:file "packages")
+               (:file "utils")
+               (:file "rooms")
+               (:file "game"))
 
   :defsystem-depends-on (:deploy)
   :build-operation #-darwin "deploy-op" #+darwin "osx-app-deploy-op"
