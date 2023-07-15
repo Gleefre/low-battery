@@ -33,16 +33,16 @@
        (setf (game-editing game) nil))
       (:scancode-kp-8
        (when (game-editing game)
-         (incf (y (game-camera game)) 1/2)))
+         (decf (y (game-camera game)) 1/2)))
       (:scancode-kp-2
        (when (game-editing game)
-         (decf (y (game-camera game)) 1/2)))
+         (incf (y (game-camera game)) 1/2)))
       (:scancode-kp-4
        (when (game-editing game)
-         (incf (x (game-camera game)) 1/2)))
+         (decf (x (game-camera game)) 1/2)))
       (:scancode-kp-6
        (when (game-editing game)
-         (decf (x (game-camera game)) 1/2)))
+         (incf (x (game-camera game)) 1/2)))
       (:scancode-kp-divide
        (save-room (room-filename *room*)))
       (:scancode-kp-multiply
