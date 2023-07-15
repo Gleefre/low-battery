@@ -23,6 +23,7 @@
                (:file "music")
                (:file "camera")
                (:file "editing")
+               (:file "hero")
                (:file "draw")
                (:file "game"))
 
