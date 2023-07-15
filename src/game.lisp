@@ -7,6 +7,7 @@
                    (editing nil)
                    (hero (make-hero))
                    (animating nil))
+  (s:background s:+black+)
   (let ((*editing* editing)
         (*room* room)
         (*camera* camera)
