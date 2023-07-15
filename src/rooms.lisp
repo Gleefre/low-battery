@@ -67,7 +67,9 @@
     (loop for (key . cell) in (alexandria:hash-table-alist (cells room))
           when cell
           do (destructuring-bind (x . y) key
-               (setf (gethash (cons (- x x->0) (- y y->0)) new-cells) cell)))
+               (if (and (numberp x) (numberp y))
+                   (setf (gethash (cons (- x x->0) (- y y->0)) new-cells) cell)
+                   (warn "Something went wrong, got malformed key:~%  C(~S) = ~S" key cell))))
     (setf (cells room) new-cells)))
 
 (defun touch-room (name)
