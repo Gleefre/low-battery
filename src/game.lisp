@@ -240,3 +240,6 @@
         (*room* (game-room game))
         (*camera* (game-camera game)))
     (call-next-method)))
+
+(s:define-start-function (start) game (:resizable t)
+  (:start (load-rooms)))
