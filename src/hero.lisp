@@ -25,7 +25,8 @@
   (serapeum:bcond
     ((alexandria:when-let ((battery (find :battery cell :key #'car)))
        (when (plusp (cdr battery))
-         (cdr battery)))
+         (prog1 (cdr battery)
+           (setf (cdr battery) 0))))
      :=> charge (setf (charge *hero*)
                       (min (+ (charge *hero*) charge)
                            (max-charge *hero*))))
