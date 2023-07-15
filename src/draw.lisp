@@ -83,10 +83,12 @@
 
 (defun draw-editing (game width height)
   (declare (ignorable game))
+
   (s+:with-translate ((/ width 2) (/ height 2))
     (s+:with-color (s:+black+ :stroke)
       (s:rect 0 0 (* 9/10 (/ width 2)) (* 9/10 (/ height 2)))
       (draw-room (* 9/10 (/ width 2)) (* 9/10 (/ height 2)))))
+
   (s+:with-translate ((/ width 2) 0)
     (s+:with-fit ((* *unit* 2) (* *unit* 1) (/ width 2) (/ height 3))
       (s:with-font (s:make-font :size (floor (min height width) 50) :align :center)
@@ -141,6 +143,7 @@
                      (let ((cell (find :portal (apply #'cell (editing-cell *editing*)) :key #'car)))
                        (setf (cdr cell) (ref *editing*)))))
           (s:text (format nil "Link portal~%to ref") 50 160)))))
+
   (s+:with-fit ((* *unit* 2) (* *unit* (ceiling (length (modeline *editing*)) 2)) (/ width 2) (/ height 2))
     (loop for thing in (modeline *editing*)
           for n from 0
@@ -154,6 +157,7 @@
                (sb:binds (sb:brect 0 0 *unit* *unit*)
                  :press (let ((n n)) (lambda (b) (update-editing-mode n b)))))
              (s:translate dx dy)))
+
   (s+:with-translate (0 (/ height 2))
     (s:with-font (s:make-font :size (floor (min height width) 30) :align :center)
       (s:text (format nil "#<MODE: ~S>" (mode *editing*))
