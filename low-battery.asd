@@ -21,6 +21,9 @@
                (:file "utils")
                (:file "rooms")
                (:file "music")
+               (:file "camera")
+               (:file "editing")
+               (:file "draw")
                (:file "game"))
 
   :defsystem-depends-on (:deploy)
