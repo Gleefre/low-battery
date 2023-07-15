@@ -1,0 +1,1 @@
+(:ROOM (:CELLS (((2 . -2) (:PORTAL)) ((1 . 1) (:PORTAL)) ((2 . 1) (:PORTAL) (:PLATFORM) (:ICE)) ((3 . 1) (:PORTAL) (:PLATFORM) (:ICE)) ((3 . 0) (:PORTAL) (:PLATFORM) (:ICE)) ((-1 . -1)) ((NIL) (:PLATFORM) (:ICE)) ((2 . 0) (:PORTAL) (:PLATFORM) (:ICE)) ((1 . 0) (:PORTAL) (:ICE) (:PLATFORM))) :NAME :MAIN))

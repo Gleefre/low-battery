@@ -34,9 +34,8 @@
   (alexandria:with-output-to-file (out file :if-exists :supersede)
     (with-standard-io-syntax
       (let ((*print-readably* T))
-        (print `(:room (:cells ,(alexandria:hash-table-alist (cells (current-room)))
-                        :name ,(name (current-room))))
-               out)))))
+        (format out "~S~%" `(:room (:cells ,(alexandria:hash-table-alist (cells (current-room)))
+                                    :name ,(name (current-room)))))))))
 
 (defun load-room (file)
   (alexandria:with-input-from-file (in file)
