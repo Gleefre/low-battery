@@ -4,6 +4,15 @@
 
 (defparameter *order* (list :platform :ice :battery :portal :update :home))
 
+(defun draw-hero ()
+  (when (animate *hero*)
+    (case (car (animate *hero*))
+      (:skiss (s+:enable-scissor 0 0 (* *unit* (- 1 (cdr (animate *hero*)))) *unit*))
+      (:move)))
+  (s+:with-color (s:+magenta+)
+    (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3)))
+  (s+:disable-scissor))
+
 (defun draw-cell (items x y)
   (when *editing*
     (sb:binds (sb:brect 0 0 *unit* *unit*)
@@ -40,6 +49,8 @@
   (let ((w (* *unit* (width *camera*)))
         (h (* *unit* (height *camera*))))
     (s+:with-fit (w h width height)
+      (when (game-animating *game*)
+        (funcall (game-animating *game*)))
       (s+:with-scissor (0 0 w h)
         (do-accessible-cells (x y)
           (s+:with-translate ((* *unit* (- x (- (x *camera*)
@@ -48,7 +59,16 @@
                               (* *unit* (- y (- (y *camera*)
                                                 (/ (height *camera*) 2))
                                            1/2)))
-            (draw-cell (cell x y) x y)))))))
+            (draw-cell (cell x y) x y)))
+        (s+:with-translate ((* *unit* (- (x *hero*)
+                                         (- (x *camera*)
+                                            (/ (width *camera*) 2))
+                                         1/2))
+                            (* *unit* (- (y *hero*)
+                                         (- (y *camera*)
+                                            (/ (height *camera*) 2))
+                                         1/2)))
+          (draw-hero))))))
 
 (defun draw-editing (game width height)
   (declare (ignorable game))

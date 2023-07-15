@@ -17,7 +17,8 @@
         (draw-room s:width s:height))))
 
 (defun go-to-room (room)
-  (setf (game-room *game*) room))
+  (setf (game-room *game*) room
+        (hero-room *game*) room))
 
 (defmethod kit.sdl2:keyboard-event ((game game) state ts rep? keysym)
   (when (eq state :keydown)
