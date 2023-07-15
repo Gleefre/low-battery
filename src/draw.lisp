@@ -47,6 +47,17 @@
              (:function
               (funcall arg)))))
 
+(defun make-cell-line (x y)
+  (let ((text (find :text (cell x y) :key #'car))
+        (portal (find :portal (cell x y) :key #'car)))
+    (when (or text portal)
+      (format nil "~{~a~^ ~}"
+              (remove nil (list (cdr text)
+                                (when portal
+                                  (if (cdr portal)
+                                      "[E] [space]"
+                                      "[inactive]"))))))))
+
 (defun draw-room (width height)
   (let ((w (* *unit* (width *camera*)))
         (h (* *unit* (+ 2 (height *camera*)))))
@@ -76,10 +87,10 @@
                                                 (/ (height *camera*) 2))
                                              1/2)))
               (draw-hero)))))
-      (s:with-font (s:make-font :size (/ *unit* 2) :align :center)
-        (alexandria:when-let ((text (find :text (cell (x *hero*) (y *hero*)) :key #'car)))
-          (s:text (cdr text) (/ w 2) (/ *unit* 3))
-          (s:text (cdr text) (/ w 2) (- h (* 2/3 *unit*))))))))
+      (s:with-font (s:make-font :size (/ *unit* 3) :align :center)
+        (alexandria:when-let ((cell-line (make-cell-line (x *hero*) (y *hero*))))
+          (s:text cell-line (/ w 2) (/ *unit* 3))
+          (s:text cell-line (/ w 2) (- h (* 2/3 *unit*))))))))
 
 (defun draw-editing (game width height)
   (declare (ignorable game))
