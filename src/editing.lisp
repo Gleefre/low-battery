@@ -24,6 +24,12 @@
   (with-room ((car *cell*))
     (apply #'(setf cell) new-cell (cdr *cell*))))
 
+(defun etext (text)
+  (if text
+      (setf (ecell) (list* (cons :text text)
+                           (remove :text (ecell) :key #'car)))
+      (setf (ecell) (remove :text (ecell) :key #'car))))
+
 (defun edit-cell (x y button)
   (declare (ignorable button))
   (when *editing*
