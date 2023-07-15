@@ -34,8 +34,14 @@
 
 (defparameter *editing* nil)
 
+(defvar *mode*)
+
+(defun edit-cell (x y button))
+
 (defun draw-cell (items x y)
-  (declare (ignorable x y))
+  (when *editing*
+    (sb:binds (sb:brect 0 0 *unit* *unit*)
+      :press (lambda (b) (edit-cell x y b))))
   (loop for thing in *order*
         for (found . arg) = (find thing items :key #'car)
         when found
@@ -65,3 +71,29 @@
         (do-accessible-cells (x y)
           (s+:with-translate ((* *unit* (- x (x *camera*))) (* *unit* (- y (y *camera*))))
             (draw-cell (cell x y) x y)))))))
+
+(s:defsketch game ((camera (make-instance 'camera))
+                   (room :main)
+                   (editing nil))
+  (let ((*editing* editing))
+    (with-room (room)
+      (with-camera (camera)
+        (draw-room s:width s:height)))))
+
+(defmethod kit.sdl2:keyboard-event ((game game) state ts rep? keysym)
+  (when (eq state :keydown)
+    (case (sdl2:scancode keysym)
+      (:scancode-kp-plus (setf (game-editing game)
+                               (not (game-editing game))))
+      (:scancode-kp-8
+       (when (game-editing game)
+         (incf (y (game-camera game)) 1/2)))
+      (:scancode-kp-2
+       (when (game-editing game)
+         (decf (y (game-camera game)) 1/2)))
+      (:scancode-kp-4
+       (when (game-editing game)
+         (incf (x (game-camera game)) 1/2)))
+      (:scancode-kp-6
+       (when (game-editing game)
+         (decf (x (game-camera game)) 1/2))))))
