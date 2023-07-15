@@ -41,7 +41,7 @@
              (:portal
               (s:text "P" (/ *unit* 2) (/ *unit* 2)))
              (:update
-              (s:text "%" (/ *unit* 2) (/ *unit* 2)))
+              (s:text (format nil "~D%" arg) (/ *unit* 2) (/ *unit* 2)))
              (:home
               (s:text "HOME" (/ *unit* 2) (/ *unit* 2)))
              (:function

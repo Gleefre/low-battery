@@ -9,7 +9,7 @@
                              (cons :ice nil)
                              (cons :battery 1)
                              (cons :portal nil)
-                             (cons :update nil)
+                             (cons :update 1)
                              (cons :home nil))
              :accessor modeline)
    (mode :initform :select :accessor mode)
@@ -32,10 +32,17 @@
               *cell* (list *room* x y))
         (let ((mode (nth (mode *editing*) (modeline *editing*))))
           (case (car mode)
-            ((:platform :ice :portal :update :home)
+            ((:platform :ice :portal :home)
              (if (member (car mode) (cell x y) :key #'car)
                  (alexandria:deletef (cell x y) (car mode) :key #'car)
                  (push (cons (car mode) nil) (cell x y))))
+            (:update
+             (let ((cell (find (car mode) (cell x y) :key #'car)))
+               (if cell
+                   (if (= 9 (cdr cell))
+                       (alexandria:deletef (cell x y) (car mode) :key #'car)
+                       (incf (cdr cell)))
+                   (push (cons (car mode) 1) (cell x y)))))
             (:battery
              (let ((cell (find (car mode) (cell x y) :key #'car)))
                (if cell
