@@ -39,7 +39,7 @@
         (let ((mode (nth (mode *editing*) (modeline *editing*))))
           (case (car mode)
             ((:platform :ice :portal :home)
-             (if (member (car mode) (cell x y) :key #'car)
+             (if (print (member (car mode) (cell x y) :key #'car))
                  (alexandria:deletef (cell x y) (car mode) :key #'car)
                  (push (cons (car mode) nil) (cell x y))))
             (:update

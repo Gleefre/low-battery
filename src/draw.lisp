@@ -43,7 +43,8 @@
                     50 35)))
         (s+:with-color (s:+magenta+)
           (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3)))))
-  (let ((*order* *order-2*))
+  (let ((*order* *order-2*)
+        (*editing* nil))
     (do-accessible-cells (x y)
       (s+:with-translate ((* *unit* (- x (- (x *camera*)
                                             (/ (width *camera*) 2))
@@ -64,7 +65,7 @@
   (s+:disable-scissor))
 
 (defun draw-cell (items x y)
-  (when *editing*
+  (when (and *editing* (numberp x) (numberp y))
     (sb:binds (sb:brect 0 0 *unit* *unit*)
       :press (lambda (b) (edit-cell x y b)))
     (s+:with-color (s:+black+ :stroke)
