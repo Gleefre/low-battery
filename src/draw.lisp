@@ -181,13 +181,8 @@
              (s:translate dx dy))))
 
 (defmacro press-button ((x y name) &body press-body)
-  `(s+:with-translate ((* 400 ,x) (* 200 ,y))
-     (s:rect 20 20 360 160)
-     (sb:binds (sb:brect 20 20 360 160)
-       :press (lambda (b)
-                (declare (ignorable b))
-                ,@press-body))
-     (s:text ,name 200 60)))
+  `(named-button ((+ 20 (* 400 ,x)) (+ 20 (* 200 ,y)) 360 160 ,name)
+     ,@press-body))
 
 (defun draw-action-buttons (width height)
   (s+:with-fit ((* *unit* 8) (* *unit* 8) width height)

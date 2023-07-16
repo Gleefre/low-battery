@@ -39,3 +39,12 @@
                                `(s:translate (* (/ ,$size ,$sum-of-sizes) ,width-var) 0)
                                `(s:translate 0 (* (/ ,$size ,$sum-of-sizes) ,height-var))))))
        nil)))
+
+(defmacro named-button ((x y w h name &optional (dy 1/3)) &body press-body)
+  `(progn
+     (s:rect ,x ,y ,w ,h)
+     (s:text ,name (+ ,x (/ ,w 2)) (+ ,y (* ,h ,dy)))
+     (sb:binds (sb:brect ,x ,y ,w ,h)
+       :press (lambda (b)
+                (declare (ignorable b))
+                ,@press-body))))
