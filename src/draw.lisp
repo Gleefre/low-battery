@@ -9,14 +9,14 @@
 (let ((font))
   (defun s::make-default-font ()
     (setf font (or font
-                   (s:make-font :face (s:load-resource (uiop:native-namestring (data-path "PromptFont.ttf")))
+                   (s:make-font :face (s:load-resource (uiop:native-namestring (data-path "font/PromptFont.ttf")))
                                 :color s:+black+
                                 :size 18)))))
 
 (let ((font))
   (defun s::make-error-font ()
     (setf font (or font
-                   (s:make-font :face (s:load-resource (uiop:native-namestring (data-path "PromptFont.ttf")))
+                   (s:make-font :face (s:load-resource (uiop:native-namestring (data-path "font/PromptFont.ttf")))
                                 :color s:+red+
                                 :size 16)))))
 
@@ -34,6 +34,7 @@
                   50 35)))
       (s+:with-color (s:+magenta+)
         (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3))))
+  (animate-change)
   (s+:disable-scissor))
 
 (defun draw-cell (items x y)

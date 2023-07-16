@@ -28,8 +28,24 @@
   (alexandria:maxf (y *camera*) (- (y *hero*) (/ (height *hero*) 2)))
   (alexandria:minf (y *camera*) (+ (y *hero*) (/ (height *hero*) 2))))
 
+(defparameter *change-animations* ())
+
+(defun animate-change ()
+  (setf *change-animations*
+        (loop for f in *change-animations*
+              when (funcall f)
+              collect f)))
+
+(defmacro animating-change ((var &rest clock-args &key &allow-other-keys) &body body)
+  `(let ((animating-clock (sc:make-clock ,@clock-args)))
+     (push (lambda (&aux (,var (sc:time animating-clock)))
+             ,@body
+             (< ,var 1))
+           *change-animations*)))
+
 (defun update-hero (&optional (rec nil)
-                    &aux (x (x *hero*)) (y (y *hero*)) (cell (cell x y)))
+                    &aux (x (x *hero*)) (y (y *hero*)) (cell (cell x y))
+                         (old-charge (charge *hero*)))
   (serapeum:bcond
     ((alexandria:when-let ((battery (find :battery cell :key #'car)))
        (when (plusp (cdr battery))
@@ -56,7 +72,22 @@
       (incf (charge *hero*) (cdr update))))
   (unless (plusp (charge *hero*))
     (when (last-portal *hero*)
-      (portal-to (last-portal *hero*)))))
+      (portal-to (last-portal *hero*))))
+  (let* ((change (- (charge *hero*) old-charge))
+         (text (format nil "~:[-~;+~]~2,'0D%" (plusp change) (abs change)))
+         (x x)
+         (y y))
+    (unless (zerop change)
+      (animating-change (v :speed 1 :time-source (game-clock *game*))
+        (s:with-font (s:make-font :size 30 :color
+                                  (if (plusp change)
+                                      (s:hex-to-color "#297f00")
+                                      (s:hex-to-color "#7f0000")))
+          (s:point (* *unit* (- (x *hero*) x 1/2))
+                   (* *unit* (- (y *hero*) y v)))
+          (s:text text
+                  (* *unit* (- (x *hero*) x 1/2))
+                  (* *unit* (- (y *hero*) y 1/2 v))))))))
 
 (defmacro animating ((var &rest clock-args &key &allow-other-keys) &body body)
   `(let ((animating-clock (sc:make-clock ,@clock-args)))
@@ -64,20 +95,23 @@
            (lambda (&aux (,var (sc:time animating-clock)))
              ,@body))))
 
+(defparameter *last-move* ())
+
 (defun animated-move (dx dy)
   (let ((x (x *hero*))
         (y (y *hero*)))
     (animating (v :time-source (game-clock *game*) :speed 2)
-      (if (>= v 0.99)
-          (progn
-            (setf (game-animating *game*) nil
-                  (animate *hero*) nil
-                  (x *hero*) (+ x dx)
-                  (y *hero*) (+ y dy))
-            (update-hero))
-          (setf (x *hero*) (+ x (* dx v))
-                (y *hero*) (+ y (* dy v))
-                (animate *hero*) (list :move v)))
+      (let ((v (easing:in-sine v)))
+        (if (>= v 1)
+            (progn
+              (setf (game-animating *game*) nil
+                    (animate *hero*) nil
+                    (x *hero*) (+ x dx)
+                    (y *hero*) (+ y dy))
+              (update-hero))
+            (setf (x *hero*) (+ x (* dx v))
+                  (y *hero*) (+ y (* dy v))
+                  (animate *hero*) (list :move v))))
       (fit-camera-to-hero))))
 
 (defparameter *portals-on* nil)
@@ -104,13 +138,10 @@
       (unless *hatched*
         (with-room (:main)
           (setf (cell 7 0) (remove :text (cell 7 0) :key #'car))
-          (if (< (max-charge *hero*) 10)
-              (push (cons :text "Get 10% battery to access easter egg.") (cell 7 0))
-              (progn
-                (push (cons :text "Now you can access easter egg!") (cell 7 0))
-                (push (list :portal :main -10 -10)
-                      (cell 7 0))
-                (setf *hatched* t)))))))
+          (push (cons :text "To the easter egg [requires 10% battery].") (cell 7 0)))
+        (unless (< (max-charge *hero*) 10)
+          (push (list :portal :main -10 -10) (cell 7 0))
+          (setf *hatched* t)))))
   (setf *portals-on* (list ref (list *room* (x *hero*) (y *hero*))))
   (setf (view *room* (x *hero*) (y *hero*))
         (list (x *camera*) (y *camera*)))
@@ -188,8 +219,9 @@
     (portal-to portal)))
 
 (defun move (dx dy &aux (x (x *hero*)) (y (y *hero*)))
-  (when (find :platform (cell (+ x dx) (+ y dy)) :key #'car)
-    (animated-move dx dy)))
+  (unless (game-animating *game*)
+    (when (find :platform (cell (+ x dx) (+ y dy)) :key #'car)
+      (animated-move dx dy))))
 
 (defun move-up ()
   (move 0 -1))
