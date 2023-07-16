@@ -130,18 +130,14 @@
 (defun (setf view) (new-view room x y)
   (setf (ref-view (list room x y)) new-view))
 
-(defparameter *hatched* nil)
-
 (defun portal-to (ref &optional (usual t))
   (when usual
     (when (equal ref '(:main 0 0))
-      (unless *hatched*
-        (with-room (:main)
-          (setf (cell 7 0) (remove :text (cell 7 0) :key #'car))
-          (push (cons :text "To the easter egg [requires 10% battery].") (cell 7 0)))
-        (unless (< (max-charge *hero*) 10)
-          (push (list :portal :main -10 -10) (cell 7 0))
-          (setf *hatched* t)))))
+      (with-room (:main)
+        (setf (cell 7 0) (list (cons :platform nil)))
+        (push (cons :text "To the easter egg [requires 10% battery].") (cell 7 0)))
+      (unless (< (max-charge *hero*) 10)
+        (push (list :portal :main -10 -10) (cell 7 0)))))
   (setf *portals-on* (list ref (list *room* (x *hero*) (y *hero*))))
   (setf (view *room* (x *hero*) (y *hero*))
         (list (x *camera*) (y *camera*)))
@@ -211,8 +207,7 @@
         (last-portal *hero*) nil
         (updates *hero*) nil)
   (with-room (:main)
-    (setf *hatched* nil
-          (cell 7 0) (list (cons :platform nil))))
+    (setf (cell 7 0) (list (cons :platform nil))))
   (portal-to '(:main 0 0) nil))
 
 (defun to-last-portal ()
