@@ -90,4 +90,5 @@
     (call-next-method)))
 
 (s:define-start-function (start) game (:resizable t)
-  (:start (load-rooms)))
+  (:start (load-rooms)
+          (music-init)))
