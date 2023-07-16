@@ -109,7 +109,8 @@
               (progn
                 (push (cons :text "Now you can access easter egg!") (cell 7 0))
                 (push (list :portal :main -10 -10)
-                      (cell 7 0))))))))
+                      (cell 7 0))
+                (setf *hatched* t)))))))
   (setf *portals-on* t)
   (setf (view *room* (x *hero*) (y *hero*))
         (list (x *camera*) (y *camera*)))
@@ -177,6 +178,9 @@
         (charge *hero*) *start-charge*
         (last-portal *hero*) nil
         (updates *hero*) nil)
+  (with-room (:main)
+    (setf *hatched* nil
+          (cell 7 0) (list (cons :platform nil))))
   (portal-to '(:main 0 0) nil))
 
 (defun to-last-portal ()

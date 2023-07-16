@@ -7,7 +7,7 @@
                    (editing nil)
                    (hero (make-hero))
                    (animating nil)
-                   (clock (sc:make-clock)))
+                   (clock (sc:make-clock :speed 2/3)))
   (let ((*editing* editing)
         (*room* room)
         (*camera* camera)
