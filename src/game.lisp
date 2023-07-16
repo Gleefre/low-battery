@@ -95,4 +95,5 @@
 
 (s:define-start-function (start) game (:resizable t)
   (:start (load-rooms)
-          (music-init)))
+          (music-init))
+  (:quit (stop-melody)))

@@ -14,7 +14,7 @@
   (setf (gethash x *notes*) note))
 
 (defun create-note (x)
-  (setf (note x) (h:create (note-file x) :mixer :effect :volume 0.3)))
+  (setf (note x) (h:create (note-file x) :mixer :effect :volume 0.2)))
 
 (defun create-notes (&aux (min -21) (max 27))
   (loop for x from min to max

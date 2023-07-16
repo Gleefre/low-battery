@@ -14,4 +14,4 @@
     (format nil "~a" (merge-pathnames relative-path data-folder))))
 
 (defun pic (name)
-  (merge-pathnames name (data-path "icons/")))
+  (uiop:native-namestring (merge-pathnames name (data-path "icons/"))))
