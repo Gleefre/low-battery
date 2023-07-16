@@ -12,3 +12,6 @@
                     (deploy:data-directory))
                   (asdf:system-relative-pathname "low-battery" *data-location*))))
     (format nil "~a" (merge-pathnames relative-path data-folder))))
+
+(defun pic (name)
+  (merge-pathnames name (data-path "icons/")))

@@ -4,13 +4,22 @@
 
 (defparameter *order* (list :platform :ice :battery :portal :update :home :text))
 
-(defun draw-hero ()
+(defparameter *with-images* t)
+
+(defun draw-hero (&aux (iter 0))
   (when (animate *hero*)
     (case (car (animate *hero*))
       (:skiss (s+:enable-scissor 0 0 (* *unit* (- 1 (cadr (animate *hero*)))) *unit*))
-      (:move)))
-  (s+:with-color (s:+magenta+)
-    (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3)))
+      (:move (setf iter (mod (floor (cadr (animate *hero*)) 1/10) 3)))))
+  (if *with-images*
+      (progn
+        (s:image (s:load-resource (pic (format nil "hero-~a.png" iter)))
+                 0 0 *unit* *unit*)
+        (s:with-font (s:make-font :color s:+red+ :size 30 :align :center)
+          (s:text (format nil "~2,'0D%" (charge *hero*))
+                  50 30)))
+      (s+:with-color (s:+magenta+)
+        (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3))))
   (s+:disable-scissor))
 
 (defun draw-cell (items x y)
@@ -27,23 +36,47 @@
         when found
         do (case thing
              (:platform
-              (s+:with-color (s:+white+)
-                (s:rect 0 0 *unit* *unit*)))
+              (if *with-images*
+                  (s:image (s:load-resource (pic "platform.png")) 0 0 *unit* *unit*)
+                  (s+:with-color (s:+white+)
+                    (s:rect 0 0 *unit* *unit*))))
              (:ice
-              (s+:with-color (s:+blue+)
-                (s:circle (/ *unit* 2) (/ *unit* 2) (/ *unit* 2))))
+              (if *with-images*
+                  (s:image (s:load-resource (pic "snow.png")) 0 0 *unit* *unit*)
+                  (s+:with-color (s:+blue+)
+                    (s:circle (/ *unit* 2) (/ *unit* 2) (/ *unit* 2)))))
              (:battery
-              (s:rect 10 30 80 60)
-              (s+:with-color (s:+green+)
-                (s:rect 20 35 (* 20 arg) 50)))
+              (if *with-images*
+                  (s:image (s:load-resource (pic (format nil "battery-~a.png" arg)))
+                           0 0 *unit* *unit*)
+                  (progn
+                    (s:rect 10 30 80 60)
+                    (s+:with-color (s:+green+)
+                      (s:rect 20 35 (* 20 arg) 50)))))
              (:text
-              (s:text "info" 0 0))
+              (if *with-images*
+                  (s:image (s:load-resource (pic "info.png"))
+                           0 (/ *unit* 2) (/ *unit* 2) (/ *unit* 2))
+                  (s:text "info" 0 0)))
              (:portal
-              (s:text "P" (/ *unit* 2) (/ *unit* 2)))
+              (if *with-images*
+                  (s:image (s:load-resource (pic (format nil "portal-~(~a~).png" (if *portals-on* :on :off))))
+                           0 0 *unit* *unit*)
+                  (s:text "P" (/ *unit* 2) (/ *unit* 2))))
              (:update
-              (s:text (format nil "~D%" arg) (/ *unit* 2) (/ *unit* 2)))
+              (if *with-images*
+                  (s:image (s:load-resource (pic (format nil "update-~a-~(~a~).png"
+                                                         arg
+                                                         (if (member (list *room* x y)
+                                                                     (updates *hero*) :test #'equal)
+                                                             :off
+                                                             :on))))
+                           0 (/ *unit* 4) *unit* (* *unit* 3/4))
+                  (s:text (format nil "~D%" arg) (/ *unit* 2) (/ *unit* 2))))
+             #+nil
              (:home
               (s:text "HOME" (/ *unit* 2) (/ *unit* 2)))
+             #+nil
              (:function
               (funcall arg)))))
 
@@ -69,6 +102,9 @@
             (s:background s:+black+)
             (when (game-animating *game*)
               (funcall (game-animating *game*)))
+            (if *with-images*
+                (s:image (s:load-resource (pic (format nil "background-~(~a~).png" *room*)))
+                         0 0 w w))
             (s:background (s:gray 0.2))
             (do-accessible-cells (x y)
               (s+:with-translate ((* *unit* (- x (- (x *camera*)
