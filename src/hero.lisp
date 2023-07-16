@@ -98,17 +98,18 @@
 
 (defparameter *hatched* nil)
 
-(defun portal-to (ref)
-  (when (equal ref '(:main 0 0))
-    (unless *hatched*
-      (with-room (:main)
-        (setf (cell 7 0) (remove :text (cell 0 7) :key #'car))
-        (if (< (max-charge *hero*) 10)
-            (push (cons :text "Get 10% battery to access easter egg.") (cell 7 0))
-            (progn
-              (push (cons :text "Now you can access easter egg!") (cell 7 0))
-              (push (list :portal :main -10 -10)
-                    (cell 7 0)))))))
+(defun portal-to (ref &optional (usual t))
+  (when usual
+    (when (equal ref '(:main 0 0))
+      (unless *hatched*
+        (with-room (:main)
+          (setf (cell 7 0) (remove :text (cell 0 7) :key #'car))
+          (if (< (max-charge *hero*) 10)
+              (push (cons :text "Get 10% battery to access easter egg.") (cell 7 0))
+              (progn
+                (push (cons :text "Now you can access easter egg!") (cell 7 0))
+                (push (list :portal :main -10 -10)
+                      (cell 7 0))))))))
   (setf *portals-on* t)
   (setf (view *room* (x *hero*) (y *hero*))
         (list (x *camera*) (y *camera*)))
@@ -170,6 +171,13 @@
                           (when (>= v 1)
                             (setf (game-animating *game*) nil
                                   *portals-on* nil)))))))))))))))
+
+(defun restart-game ()
+  (setf (max-charge *hero*) *start-charge*
+        (charge *hero*) *start-charge*
+        (last-portal *hero*) nil
+        (updates *hero*) nil)
+  (portal-to '(:main 0 0) nil))
 
 (defun to-last-portal ()
   (alexandria:when-let ((portal (last-portal *hero*)))
