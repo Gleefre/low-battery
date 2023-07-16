@@ -111,7 +111,7 @@
                 (push (list :portal :main -10 -10)
                       (cell 7 0))
                 (setf *hatched* t)))))))
-  (setf *portals-on* t)
+  (setf *portals-on* (list ref (list *room* (x *hero*) (y *hero*))))
   (setf (view *room* (x *hero*) (y *hero*))
         (list (x *camera*) (y *camera*)))
   (let ((x (* *unit* (- (x *hero*) (- (x *camera*)

@@ -85,7 +85,10 @@
                   (s:text "info" 0 0)))
              (:portal
               (if *with-images*
-                  (s:image (s:load-resource (pic (format nil "portal-~(~a~).png" (if *portals-on* :on :off))))
+                  (s:image (s:load-resource (pic (format nil "portal-~(~a~).png"
+                                                         (if (member (list *room* x y) *portals-on* :test #'equal)
+                                                             :on
+                                                             :off))))
                            0 0 *unit* *unit*)
                   (s:text "P" (/ *unit* 2) (/ *unit* 2))))
              (:update
@@ -106,15 +109,9 @@
               (funcall arg)))))
 
 (defun make-cell-line (x y)
-  (let ((text (find :text (cell x y) :key #'car))
-        (portal (find :portal (cell x y) :key #'car)))
-    (when (or text portal)
-      (format nil "~{~a~^ ~}"
-              (remove nil (list (cdr text)
-                                (when portal
-                                  (if (cdr portal)
-                                      "[E] [space]"
-                                      "[inactive]"))))))))
+  (let ((text (find :text (cell x y) :key #'car)))
+    (when text
+      (cdr text))))
 
 (defun draw-room (width height)
   (let ((w (* *unit* (width *camera*)))
@@ -147,9 +144,13 @@
                                                1/2)))
                 (draw-hero))))))
       (s:with-font (s:make-font :size 20 :align :left)
-        (s:text (format nil "BATTERY: ~2,'0D%" (charge *hero*)) 0 0))
-      (s:with-font (s:make-font :size 20 :align :left)
+        (s:text (format nil "BATTERY: ~2,'0D%" (charge *hero*)) 0 0)
         (s:text (format nil "BATTERY: ~2,'0D%" (charge *hero*)) 0 (- h *unit*)))
+      (s:with-font (s:make-font :size 20 :align :right)
+        (alexandria:when-let ((portal (find :portal (cell (x *hero*) (y *hero*)) :key #'car)))
+          (let ((text (if (cdr portal) "[E] [space]" "[inactive]")))
+            (s:text text w 0)
+            (s:text text w (- h 100)))))
       (s:with-font (s:make-font :size 25 :align :center)
         (alexandria:when-let ((cell-line (make-cell-line (x *hero*) (y *hero*))))
           (s:text cell-line (/ w 2) (/ *unit* 3))
