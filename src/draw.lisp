@@ -41,10 +41,7 @@
     (sb:binds (sb:brect 0 0 *unit* *unit*)
       :press (lambda (b) (edit-cell x y b)))
     (s+:with-color (s:+black+ :stroke)
-      (s:rect 10 10 80 80))
-    (when items
-      (s+:with-color (s:+yellow+)
-        (s:rect 10 10 80 80))))
+      (s:rect 10 10 80 80)))
   (loop for thing in *order*
         for (found . arg) = (find thing items :key #'car)
         when found
