@@ -191,7 +191,7 @@
 
 (defun draw-action-buttons (width height)
   (s+:with-fit ((* *unit* 8) (* *unit* 8) width height)
-    (s:with-font (s:make-font :size 40 :align :center)
+    (s:with-font (s:make-font :size 35 :align :center)
       (press-button (0 0 "Save room")
         (save-room (room-filename *room*)))
       (press-button (0 1 "Reset room")

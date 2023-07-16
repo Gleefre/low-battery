@@ -33,6 +33,7 @@
                                           (,width-var (* (/ ,$size ,$sum-of-sizes) ,width-var)))
                                         `((,width-var ,width-var)
                                           (,height-var (* (/ ,$size ,$sum-of-sizes) ,height-var)))))
+                              (declare (ignorable ,height-var ,width-var))
                               ,@body)
                    collect (if (eq orientation :horizontal)
                                `(s:translate (* (/ ,$size ,$sum-of-sizes) ,width-var) 0)
