@@ -103,7 +103,7 @@
     (when (equal ref '(:main 0 0))
       (unless *hatched*
         (with-room (:main)
-          (setf (cell 7 0) (remove :text (cell 0 7) :key #'car))
+          (setf (cell 7 0) (remove :text (cell 7 0) :key #'car))
           (if (< (max-charge *hero*) 10)
               (push (cons :text "Get 10% battery to access easter egg.") (cell 7 0))
               (progn
