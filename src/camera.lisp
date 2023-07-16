@@ -17,6 +17,20 @@
   `(let ((*camera* ,camera))
      ,@body))
 
+(defvar *unit* 100)
+
+(defmacro with-cell-focus ((x y &optional (unit '*unit*)) &body body)
+  `(let ((*unit* ,unit))
+     (s+:with-translate ((* *unit* (- ,x
+                                      (- (x *camera*)
+                                         (/ (width *camera*) 2))
+                                      1/2))
+                         (* *unit* (- ,y
+                                      (- (y *camera*)
+                                         (/ (height *camera*) 2))
+                                      1/2)))
+       ,@body)))
+
 ;; FIXME: Add support for angle
 (defmacro do-accessible-cells ((var-x var-y &optional (camera '*camera*)) &body body)
   (alexandria:with-gensyms ($min-x $max-x $min-y $max-y $x $y $camera)

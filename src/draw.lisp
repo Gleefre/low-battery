@@ -1,7 +1,5 @@
 (in-package #:low-battery)
 
-(defparameter *unit* 100)
-
 (defparameter *order* (list :platform :ice :battery :portal :update :home))
 (defparameter *order-2* (list :text))
 
