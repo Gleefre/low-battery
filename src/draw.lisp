@@ -201,7 +201,7 @@
 
   (s+:with-translate ((/ width 2) 0)
     (s+:with-fit ((* *unit* 2) (* *unit* 1) (/ width 2) (/ height 3))
-      (s:with-font (s:make-font :size (floor (min height width) 50) :align :center)
+      (s:with-font (s:make-font :size (floor (min height width) 70) :align :center)
         (s:rect 5 5 90 40)
         (sb:binds (sb:brect 5 5 90 40)
           :press (lambda (b)
