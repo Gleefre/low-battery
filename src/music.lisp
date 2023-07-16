@@ -20,7 +20,7 @@
   (loop for x from min to max
         do (create-note x)))
 
-(defparameter *sfx-mute* NIL)
+(defparameter *sfx-mute* T)
 
 (defun sfx (&rest notes)
   (unless *sfx-mute*
@@ -55,30 +55,38 @@
              (sleep (/ dt 6)))))
 
 (defun melody ()
+  (setf *sfx-mute* nil)
   (unless *melody*
-    (setf *melody* t)
-    (bt:make-thread
-     (lambda ()
-       (loop while *melody*
-             for z in '#1=(7 11 19 19 7 11 . #1#)
-             for y = 1 then (mod (1+ (expt y 3)) z)
-             for (p1 p2) in '#2=((:one :one)
-                                 (:one :one)
-                                 (:two :two)
-                                 (:two+ :two-)
-                                 (:four :one)
-                                 (:four :one)
-                                 (:one :zero)
-                                 (:zero :zero)
-                                 (:zero :one++)
-                                 . #2#)
-             for seq = (loop for x from y to (+ y 12) by 4 collect x)
-             do (play-one seq (list (- y 5) (- y 9)) p1 .4)
-                (play-one seq (list (- y 5) (- y 9)) p2 .4)))
-     :name "MELODY")))
+    (setf *melody*
+          (bt:make-thread
+           (lambda ()
+             (loop while *melody*
+                   for z in '#1=(7 11 19 19 7 11 . #1#)
+                   for y = 1 then (mod (1+ (expt y 3)) z)
+                   for (p1 p2) in '#2=((:one :one)
+                                       (:one :one)
+                                       (:two :two)
+                                       (:two+ :two-)
+                                       (:four :one)
+                                       (:four :one)
+                                       (:one :zero)
+                                       (:zero :zero)
+                                       (:zero :one++)
+                                       . #2#)
+                   for seq = (loop for x from y to (+ y 12) by 4 collect x)
+                   do (play-one seq (list (- y 5) (- y 9)) p1 .4)
+                      (play-one seq (list (- y 5) (- y 9)) p2 .4)))
+           :name "MELODY"))))
 
 (defun stop-melody ()
-  (setf *melody* nil))
+  (bt:destroy-thread *melody*)
+  (setf *melody* nil
+        *sfx-mute* t))
+
+(defun toggle-sfx ()
+  (if *sfx-mute*
+      (progn (melody))
+      (progn (stop-melody))))
 
 (defun music-init ()
   (unless h:*server*

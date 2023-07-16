@@ -1,6 +1,7 @@
 (defpackage #:low-battery
   (:use #:cl)
   (:export #:start #:start-toplevel)
+  (:shadow #:room)
   (:local-nicknames (#:s  #:sketch)
                     (#:s+ #:sketch-utils)
                     (#:sb #:sketch-buttons)

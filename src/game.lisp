@@ -71,7 +71,9 @@
       (:scancode-r
        (unless (game-animating game)
          (when (equal '(:main 4 16) (list *room* (x *hero*) (y *hero*)))
-           (restart-game)))))))
+           (restart-game))))
+      (:scancode-m
+       (toggle-sfx)))))
 
 (defmethod kit.sdl2:mousebutton-event :around ((game game) state ts button x y)
   (let ((*editing* (game-editing game))
