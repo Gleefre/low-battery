@@ -24,14 +24,14 @@
   (when (animate *hero*)
     (case (car (animate *hero*))
       (:skiss (s+:enable-scissor 0 0 (* *unit* (- 1 (cadr (animate *hero*)))) *unit*))
-      (:move (setf iter (mod (floor (cadr (animate *hero*)) 1/10) 3)))))
+      (:move (setf iter (mod (floor (cadr (animate *hero*)) 1/3) 3)))))
   (if *with-images*
       (progn
         (s:image (s:load-resource (pic (format nil "hero-~a.png" iter)))
-                 0 0 *unit* *unit*)
-        (s:with-font (s:make-font :color s:+red+ :size 30 :align :center)
+                 -25 -25 (+ 50 *unit*) (+ 50 *unit*))
+        (s:with-font (s:make-font :color s:+red+ :size 20 :align :center)
           (s:text (format nil "~2,'0D%" (charge *hero*))
-                  50 30)))
+                  50 35)))
       (s+:with-color (s:+magenta+)
         (s:ellipse (/ *unit* 2) (/ *unit* 2) (/ *unit* 2) (/ *unit* 3))))
   (s+:disable-scissor))
@@ -54,26 +54,34 @@
                   (s:image (s:load-resource (pic (format nil "~(~a~)-platform.png"
                                                          (if (eq *room* :main)
                                                              :warm :cold))))
-                           0 0 *unit* *unit*)
+                           -5 -5 110 110)
                   (s+:with-color (s:+white+)
                     (s:rect 0 0 *unit* *unit*))))
              (:ice
               (if *with-images*
-                  (s:image (s:load-resource (pic "snow.png")) 0 0 *unit* *unit*)
+                  (s:image (s:load-resource (pic "snow.png"))
+                           3 3 94 94)
                   (s+:with-color (s:+blue+)
                     (s:circle (/ *unit* 2) (/ *unit* 2) (/ *unit* 2)))))
              (:battery
               (if *with-images*
-                  (s:image (s:load-resource (pic (format nil "battery-~a.png" arg)))
-                           0 0 *unit* *unit*)
+                  (progn
+                    (s+:with-color (s:+black+)
+                      (s:rect 15 35 60 30))
+                    (s:image (s:load-resource (pic (format nil "battery-~a.png" arg)))
+                             0 0 *unit* *unit*))
                   (progn
                     (s:rect 10 30 80 60)
                     (s+:with-color (s:+green+)
                       (s:rect 20 35 (* 20 arg) 50)))))
              (:text
               (if *with-images*
-                  (s:image (s:load-resource (pic "info.png"))
-                           0 (/ *unit* 2) (/ *unit* 2) (/ *unit* 2))
+                  (progn
+                    (s+:with-color (s:+black+)
+                      (s:rect 7 57 35 25)
+                      (s:rect 20 82 10 20))
+                    (s:image (s:load-resource (pic "info.png"))
+                             0 (/ *unit* 2) (/ *unit* 2) (/ *unit* 2)))
                   (s:text "info" 0 0)))
              (:portal
               (if *with-images*
@@ -81,15 +89,15 @@
                            0 0 *unit* *unit*)
                   (s:text "P" (/ *unit* 2) (/ *unit* 2))))
              (:update
-              (if *with-images*
-                  (s:image (s:load-resource (pic (format nil "update-~a-~(~a~).png"
-                                                         arg
-                                                         (if (member (list *room* x y)
-                                                                     (updates *hero*) :test #'equal)
-                                                             :off
-                                                             :on))))
-                           0 (/ *unit* 4) *unit* (* *unit* 3/4))
-                  (s:text (format nil "~D%" arg) (/ *unit* 2) (/ *unit* 2))))
+              (let* ((xx 1/2)
+                     (yy 20)
+                     (v (abs (1- (mod (* xx (sc:time (game-clock *game*))) 2))))
+                     (dy (* yy (easing:in-out-sine v))))
+                (s:with-font (s:make-font :size 25 :align :center :color
+                                          (if (member (list *room* x y) (updates *hero*) :test #'equal)
+                                              (s:gray 0.4)
+                                              s:+red+))
+                  (s:text (format nil "+~2,'0D%" arg) 50 (+ 30 dy)))))
              #+nil
              (:home
               (s:text "HOME" (/ *unit* 2) (/ *unit* 2)))
