@@ -27,8 +27,10 @@
 (defmethod kit.sdl2:keyboard-event ((game game) state ts rep? keysym)
   (when (eq state :keydown)
     (case (sdl2:scancode keysym)
+      #-deploy
       (:scancode-kp-plus
        (setf (game-editing game) (make-instance 'editing)))
+      #-deploy
       (:scancode-kp-minus
        (setf (game-editing game) nil))
       (:scancode-kp-8
