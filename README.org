@@ -5,6 +5,28 @@
 #+description: This is a README file for the Low Battery game
 #+language: en
 
+* About
+  This is a submission for [[https://itch.io/jam/trijam-228][Trijam #228]].
+** Development time: 12h 30m
+   ~7 hours of coding, ~2 hours of drawing, ~2 hours of level design and ~2 hours struggling.
+** Description
+   You want to go home, but your battery is dead. You can't go if you have less
+   than 10% battery!
+
+   Find battery updates to be able to get home!
+
+   [ an easter egg exists! ]
+** Controls
+   - Movement: WASD / arrows
+   - Interaction: [E] / [space]
+   - Mute/Unmute: [M] / mouse
+   - Quit: [escape] / mouse
+** Credits
+   Dedicated to my little sister as a reminder to keep your phone charged :)
+
+   Code, art, sound: Gleefre
+** Reporting bugs
+   Feel free to report bugs using issues on github.
 * Installation
 ** From binaries
    See [[https://github.com/gleefre/low-battery/releases/latest][latest release]].
