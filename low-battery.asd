@@ -1,6 +1,6 @@
 (asdf:defsystem "low-battery"
   :description "Low Batter - Game for Trijam #228"
-  :version "0.1.0"
+  :version "0.1.1"
   :author "Gleefre <varedif.a.s@gmail.com>"
   :licence "Apache 2.0"
 
