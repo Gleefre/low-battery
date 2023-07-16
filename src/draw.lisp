@@ -192,7 +192,7 @@
 
 (defun draw-action-buttons (width height)
   (macrolet ((action-button ((x y name) &body press-body)
-               `(named-button ((+ 20 (* 400 ,x)) (+ 20 (* 200 ,y)) 360 160 ,name)
+               `(named-button ((+ 20 (* 400 ,x)) (+ 20 (* 200 ,y)) 360 160 ,name) (:press)
                   ,@press-body)))
     (s+:with-fit ((* *unit* 8) (* *unit* 8) width height)
       (s:with-font (s:make-font :size 35 :align :center)

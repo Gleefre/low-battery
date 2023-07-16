@@ -40,11 +40,11 @@
                                `(s:translate 0 (* (/ ,$size ,$sum-of-sizes) ,height-var))))))
        nil)))
 
-(defmacro named-button ((x y w h name &optional (dy 1/3)) &body press-body)
+(defmacro named-button ((x y w h name &optional (dy 1/3)) (&optional (when :press)) &body press-body)
   `(progn
      (s:rect ,x ,y ,w ,h)
      (s:text ,name (+ ,x (/ ,w 2)) (+ ,y (* ,h ,dy)))
      (sb:binds (sb:brect ,x ,y ,w ,h)
-       :press (lambda (b)
-                (declare (ignorable b))
-                ,@press-body))))
+       ,when (lambda (b)
+               (declare (ignorable b))
+               ,@press-body))))
