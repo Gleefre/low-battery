@@ -123,35 +123,48 @@
         z
         x)))
 
+(defun draw-room-header-buttons (width height)
+  (s+:with-fit (300 200 width height)
+    (s:with-font (s:make-font :size 35 :align :center)
+      (s+:with-color ((s:gray 0.8))
+        (named-button (10 10 280 80 "Quit [escape]" 1/4) (:release)
+          (kit.sdl2:close-window *game*))
+        (named-button (10 110 280 80 (if *sfx-mute*
+                                         "Unmute [M]"
+                                         "Mute [M]")
+                       1/4)
+            (:press)
+          (toggle-sfx))))))
+
 (defun draw-room-header (width height &aux (w (width *camera*))
                                            (x (maybe-round (x *hero*)))
                                            (y (maybe-round (y *hero*))))
   (s+:with-fit ((* 200 w) 200 width height)
-    (s:with-font (s:make-font :size 40 :align :left)
-      (s:text (format nil "BATTERY: ~2,'0D%" (charge *hero*)) 0 0))
-
-    (s:with-font (s:make-font :size 40 :align :center)
-      (s+:with-color ((s:gray 0.8))
-        (named-button ((* (- w 3/2) 200) 110 300 80
-                       (if *sfx-mute*
-                           "Unmute [M]"
-                           "Mute [M]")
-                       1/4)
-            (:press)
-          (toggle-sfx))
-        (named-button ((* (- w 3/2) 200) 10 300 80 "Quit [escape]" 1/4) (:release)
-          (kit.sdl2:close-window *game*)))
-      (alexandria:when-let ((portal (find :portal (cell x y) :key #'car)))
-        (let ((text (if (cdr portal) "[E] [space]" "[inactive]")))
-          (s+:with-color ((s:gray 0.9))
-            (s:rect (* 100 (- w 3/2)) 10 300 50))
-          (s:text text (* 100 w) 5))))
-    (s:with-font (s:make-font :size 40 :align :center)
-      (alexandria:when-let ((cell-line (make-cell-line x y)))
-        (s+:with-color (                ;(s:gray 0.9)
-                        (s:hex-to-color "#d7980b"))
-          (s:rect 20 80 (* 200 (- w 7/4)) 100))
-        (s:text cell-line (* 100 (- w 3/2)) 100)))))
+    (let ((width (* 200 w))
+          (height 200))
+      (with-split (width height :horizontal)
+        ((- w 3/2)
+         (with-split (width height :vertical)
+           (2
+            (with-split (width height :horizontal)
+              (2 (s:with-font (s:make-font :size 40 :align :left)
+                   (s:text (format nil "BATTERY: ~2,'0D%" (charge *hero*)) 0 0)))
+              (1 (s+:with-fit (400 100 width height)
+                   (alexandria:when-let ((portal (find :portal (cell x y) :key #'car)))
+                     (let ((text (if (cdr portal) "[E] [space]" "[inactive]")))
+                       (s+:with-color (;(s:gray 0.9)
+                                       (s:hex-to-color "#7dff7d"))
+                         (s:rect 50 15 300 70))
+                       (s:with-font (s:make-font :size 40 :align :center)
+                         (s:text text 200 25))))))))
+           (3
+            (s:with-font (s:make-font :size 40 :align :center)
+              (alexandria:when-let ((cell-line (make-cell-line x y)))
+                (s+:with-color ((s:hex-to-color "#d7980b"))
+                  (s:rect 20 5 (- width 40) (- height 10)))
+                (s:text cell-line (/ width 2) 30))))))
+        (3/2
+         (draw-room-header-buttons width height))))))
 
 (defun draw-room-cells (w h)
   (s:with-pen (s:make-pen)
