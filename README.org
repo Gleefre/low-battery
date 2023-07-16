@@ -5,6 +5,76 @@
 #+description: This is a README file for the Low Battery game
 #+language: en
 
+* Installation
+** From binaries
+   See [[https://github.com/gleefre/low-battery/releases/latest][latest release]].
+** From source
+*** Requirements
+    - Libraries (most of them are available from quicklisp)
+      - Depends on [[https://github.com/vydd/sketch][sketch]], [[https://github.com/Gleefre/sketch-fit][sketch-fit]], [[https://github.com/Gleefre/sketch-utils][sketch-utils]], [[https://github.com/Gleefre/sketch-buttons][sketch-buttons]], [[https://github.com/Gleefre/stopclock][stopclock]],
+        [[https://github.com/Shirakumo/harmony][harmony]] (and [[https://github.com/Shirakumo/cl-mixed][cl-mixed]]), [[https://github.com/robert-strandh/Stealth-mixin][Stealth-mixin]], [[https://alexandria.common-lisp.dev/][alexandria]] and finally [[https://github.com/ruricolist/serapeum][serapeum]].
+      - You will need to use ~define-start-function-2~ branch of my sketch's [[https://github.com/Gleefre/sketch][fork]].
+      - You will need to install [[https://github.com/Gleefre/sketch-fit][sketch-fit]], [[https://github.com/Gleefre/sketch-utils][sketch-utils]], [[https://github.com/Gleefre/sketch-buttons][sketch-buttons]], and
+        [[https://github.com/Gleefre/stopclock][stopclock]] from source, while others are available from [[https://www.quicklisp.org/beta/][quicklisp]].
+    - Foreign dependencies
+      - SDL2, SDL2 Image, SDL2 TTF
+        =sketch= relies on =SDL2= library which is a C library.
+        See [[https://github.com/vydd/sketch#foreign-dependencies][sketch's README]] for more details.
+**** Fetch non-quicklisp libraries
+     You can fetch all non-quicklisp libraries with git clone:
+     #+BEGIN_SRC bash
+     cd $HOME/quicklisp/local-projects/
+     git clone https://github.com/Gleefre/stopclock
+     git clone https://github.com/Gleefre/sketch-fit
+     git clone https://github.com/Gleefre/sketch-utils
+     git clone https://github.com/Gleefre/sketch-buttons
+     git clone https://github.com/Gleefre/sketch -b define-start-function-2
+     git clone https://github.com/Shirakumo/harmony  # Needs most recent fixes
+     git clone https://github.com/Gleefre/cl-mixed  # Needs most recent fixes + has newer libmixed.so for linux
+     #+END_SRC
+*** Building
+    You can build the game with make:
+    #+BEGIN_SRC bash
+    # Builds waller and waller-editor
+    make build
+    # Bundles executable and all needed resources to low-battery/ folder
+    make bundle
+    # For linux
+    # Adds run.sh and run-editor.sh scrips to the bundle and creates a zip archive
+    make lin-bundle
+    # For windows
+    # Adds run.bat and run-editor.bar scrips to the bundle
+    make win-bundle
+    #+END_SRC
+    You can also specify which lisp implementation to use (sbcl is used by default) with ~LISP~ variable:
+    #+BEGIN_SRC bash
+    LISP=ccl make build
+    #+END_SRC
+**** Supported implementations
+     sbcl, ccl.
+*** Running from source
+    To run this game you need to load the ~:low-battery~ system:
+    #+BEGIN_SRC lisp
+    (ql:quickload :low-battery)
+    #+END_SRC
+    Then you need to call the main function:
+    #+BEGIN_SRC lisp
+    (low-battery:start)
+    #+END_SRC
+    To run the game from a script you might want to use the ~start-toplevel~ funtion:
+    #+BEGIN_SRC lisp
+    (waller:start-toplevel)
+    #+END_SRC
+    ~start-toplevel~ will quit the CL process when you close the game.
+
+**** Editor
+     When running from source you can access editor with ~KP-+~.
+     See source code for details.
+**** Supported implementations
+     sbcl, ccl, ecl.
+* Screenshots
+  [[screens/screen-1.png]]
+  [[screens/screen-2.png]]
 * License
    Copyright 2023 Gleefre
 
