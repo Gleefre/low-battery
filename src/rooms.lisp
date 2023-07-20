@@ -9,8 +9,8 @@
 (defvar *known-rooms* ())
 
 (defmethod initialize-instance :after ((room room) &key &allow-other-keys)
-  (setf (gethash (name room) *rooms-table*) room)
   (when (keywordp (name room))
+    (setf (gethash (name room) *rooms-table*) room)
     (pushnew (name room) *known-rooms*)))
 
 (defvar *room*)
