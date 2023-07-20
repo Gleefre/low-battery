@@ -17,12 +17,10 @@
    (ref :initform nil :accessor ref)))
 
 (defun ecell ()
-  (with-room ((car *cell*))
-    (apply #'cell (cdr *cell*))))
+  (apply #'room-cell *cell*))
 
 (defun (setf ecell) (new-cell)
-  (with-room ((car *cell*))
-    (apply #'(setf cell) new-cell (cdr *cell*))))
+  (setf (apply #'room-cell *cell*) new-cell))
 
 (defun etext (text)
   (if text

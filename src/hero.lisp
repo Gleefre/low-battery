@@ -132,9 +132,8 @@
 (defun portal-to (ref &optional (usual t))
   (when usual
     (when (equal ref '(:main 0 0))
-      (with-room (:main)
-        (setf (cell 7 0) (list (cons :platform nil)))
-        (push (cons :text "To the easter egg [requires 10% battery].") (cell 7 0)))
+      (setf (room-cell :main 7 0) (list (cons :platform nil)))
+      (push (cons :text "To the easter egg [requires 10% battery].") (room-cell :main 7 0))
       (unless (< (max-charge *hero*) 10)
         (push (list :portal :main -10 -10) (cell 7 0)))))
   (setf *portals-on* (list ref (list *room* (x *hero*) (y *hero*))))
@@ -204,8 +203,7 @@
         (charge *hero*) *start-charge*
         (last-portal *hero*) nil
         (updates *hero*) nil)
-  (with-room (:main)
-    (setf (cell 7 0) (list (cons :platform nil))))
+  (setf (room-cell :main 7 0) (list (cons :platform nil)))
   (portal-to '(:main 0 0) nil))
 
 (defun to-last-portal ()
