@@ -97,4 +97,4 @@
 (s:define-start-function (start) game (:resizable t :width 800 :height 1000)
   (:start (load-rooms)
           (music-init))
-  (:quit (stop-melody)))
+  (:on-close (_) (stop-melody)))
