@@ -2,7 +2,8 @@
 
 (defvar *game*)
 
-(s:defsketch game ((camera (make-instance 'camera))
+(s:defsketch game ((s:title "Low Battery")
+                   (camera (make-instance 'camera))
                    (room :main)
                    (editing nil)
                    (hero (make-hero))
