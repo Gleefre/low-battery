@@ -92,5 +92,4 @@
   (unless h:*server*
     (h:maybe-start-simple-server :mixers '((:effect m:basic-mixer))
                                  :name "Low Battery")
-    (create-notes)
-    (melody)))
+    (create-notes)))
