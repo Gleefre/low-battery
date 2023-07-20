@@ -57,6 +57,14 @@
               (make-instance 'room :cells (alexandria:alist-hash-table cells :test #'equal)
                                    :name name))))))))
 
+(defun reset-room (room)
+  (let ((*room* room))
+    (maphash (lambda (key value)
+               (declare (ignorable key))
+               (alexandria:when-let ((battery (find :battery value :key #'car)))
+                 (setf (cadr battery) (caddr battery))))
+             (cells (current-room)))))
+
 (defun room-filename (name)
   (data-path (format nil "rooms/~a.room" (string name))))
 

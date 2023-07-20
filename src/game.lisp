@@ -72,7 +72,7 @@
          (interact)))
       (:scancode-r
        (unless (game-animating game)
-         (when (equal '(:main 4 16) (list *room* (x *hero*) (y *hero*)))
+         (when (find :end (cell (x *hero*) (y *hero*)) :key #'car)
            (restart-game))))
       (:scancode-m
        (toggle-sfx)))))
