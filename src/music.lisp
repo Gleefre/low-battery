@@ -79,9 +79,10 @@
            :name "MELODY"))))
 
 (defun stop-melody ()
-  (bt:destroy-thread *melody*)
-  (setf *melody* nil
-        *sfx-mute* t))
+  (when *melody*
+    (bt:destroy-thread *melody*)
+    (setf *melody* nil
+          *sfx-mute* t)))
 
 (defun toggle-sfx ()
   (if *sfx-mute*
