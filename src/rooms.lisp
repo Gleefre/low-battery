@@ -2,7 +2,7 @@
 
 (defclass room ()
   ((cells :initform (make-hash-table :test #'equal) :initarg :cells :accessor cells)
-   (name  :initform (gensym "UNNAMED-ROOM") :initarg :name :reader name)))
+   (name  :initform nil :initarg :name :reader name)))
 
 (defvar *rooms-table* (make-hash-table))
 
