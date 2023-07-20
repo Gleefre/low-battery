@@ -243,7 +243,7 @@
                 (setf (cdr cell)
                       (list* *room* (editing-cell *editing*)))))))
         (action-button (2 0 "(!) DELETE ALL")
-          (setf (cells (current-room)) (make-hash-table :test #'equal)))
+          (setf (cells) (make-hash-table :test #'equal)))
         (when (editing-cell *editing*)
           (action-button (0 2 "Save ref")
             (setf (ref *editing*)
