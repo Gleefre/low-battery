@@ -1,7 +1,7 @@
 (in-package #:low-battery)
 
-(defparameter *camera-width* 7)
-(defparameter *camera-height* 7)
+(defparameter *camera-width* 6.8)
+(defparameter *camera-height* 6.8)
 
 (defclass camera ()
   ((x :initform 0d0 :initarg :x :accessor x)
