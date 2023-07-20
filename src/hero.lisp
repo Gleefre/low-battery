@@ -8,8 +8,7 @@
 (defparameter *start-charge* 2)
 
 (defclass hero ()
-  ((room :initform :main :initarg :room :accessor hero-room)
-   (x :initform 0 :initarg :x :accessor x)
+  ((x :initform 0 :initarg :x :accessor x)
    (y :initform 0 :initarg :y :accessor y)
    (width :initform *hero-width* :initarg :width :accessor width)
    (height :initform *hero-height* :initarg :height :accessor height)
