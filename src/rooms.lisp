@@ -15,10 +15,16 @@
 
 (defvar *room*)
 
+(defun ensure-room (room)
+  (etypecase room
+    (keyword (gethash room *rooms-table*))
+    (room room)))
+
 (defun current-room ()
-  (etypecase *room*
-    (symbol (gethash *room* *rooms-table*))
-    (room *room*)))
+  (ensure-room *room*))
+
+(defun current-room-cells ()
+  (cells (current-room)))
 
 (defun list-all-rooms ()
   (mapcar (lambda (key) (gethash key *rooms-table*))
@@ -32,11 +38,17 @@
   `(let ((*room* ,room))
      ,@body))
 
+(defun room-cell (room x y)
+  (gethash (cons x y) (cells (ensure-room room))))
+
+(defun (setf room-cell) (new-cell room x y)
+  (setf (gethash (cons x y) (cells (ensure-room room))) new-cell))
+
 (defun cell (x y)
-  (gethash (cons x y) (cells (current-room))))
+  (room-cell *room* x y))
 
 (defun (setf cell) (new-cell x y)
-  (setf (gethash (cons x y) (cells (current-room))) new-cell))
+  (setf (room-cell *room* x y) new-cell))
 
 (defun save-room (file &optional (*room* *room*))
   ;; FIXME: This is an ugly workaround
@@ -44,7 +56,7 @@
   (alexandria:with-output-to-file (out file :if-exists :supersede)
     (with-standard-io-syntax
       (let ((*print-readably* T))
-        (format out "~S~%" `(:room (:cells ,(alexandria:hash-table-alist (cells (current-room)))
+        (format out "~S~%" `(:room (:cells ,(alexandria:hash-table-alist (current-room-cells))
                                     :name ,(name (current-room)))))))))
 
 (defun load-room (file)
@@ -63,7 +75,7 @@
                (declare (ignorable key))
                (alexandria:when-let ((battery (find :battery value :key #'car)))
                  (setf (cadr battery) (caddr battery))))
-             (cells (current-room)))))
+             (current-room-cells))))
 
 (defun room-filename (name)
   (data-path (format nil "rooms/~a.room" (string name))))
